@@ -69,8 +69,9 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
         ) : (
           <form onSubmit={handleSubmit} className="p-5 space-y-4">
             <div>
-              <label className="block text-slate-400 text-sm mb-1">현재 비밀번호 *</label>
+              <label htmlFor="current-password" className="block text-slate-400 text-sm mb-1">현재 비밀번호 *</label>
               <input
+                id="current-password"
                 type="password"
                 value={current}
                 onChange={e => setCurrent(e.target.value)}
@@ -82,10 +83,11 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
               />
             </div>
             <div>
-              <label className="block text-slate-400 text-sm mb-1">
+              <label htmlFor="new-password" className="block text-slate-400 text-sm mb-1">
                 새 비밀번호 * <span className="text-slate-500">({MIN_LENGTH}자 이상)</span>
               </label>
               <input
+                id="new-password"
                 type="password"
                 value={next}
                 onChange={e => setNext(e.target.value)}
@@ -96,8 +98,9 @@ export default function ChangePasswordModal({ onClose }: ChangePasswordModalProp
               />
             </div>
             <div>
-              <label className="block text-slate-400 text-sm mb-1">새 비밀번호 확인 *</label>
+              <label htmlFor="confirm-password" className="block text-slate-400 text-sm mb-1">새 비밀번호 확인 *</label>
               <input
+                id="confirm-password"
                 type="password"
                 value={confirm}
                 onChange={e => setConfirm(e.target.value)}

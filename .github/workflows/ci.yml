@@ -70,6 +70,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: 테스트 (Vitest)
+        run: npm run test
+
       # build 스크립트가 `tsc -b && vite build` 라서 타입 검사도 함께 이뤄진다
       - name: 타입체크 + 빌드
         run: npm run build
