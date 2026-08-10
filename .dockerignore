@@ -1,0 +1,21 @@
+# 빌드 산출물 / 의존성 (이미지 안에서 새로 빌드함)
+frontend/node_modules
+frontend/dist
+backend/MyHome.API/bin
+backend/MyHome.API/obj
+backend/MyHome.API/publish
+
+# 실데이터 — 절대 이미지에 굽지 않는다 (런타임에 바인드 마운트로 주입)
+**/myhome.db*
+backend/MyHome.API/wwwroot
+docker-data
+
+# 개발 환경 파일
+.claude
+deploy
+.DS_Store
+**/.DS_Store
+*.md
+.env
+Dockerfile
+docker-compose.yml

@@ -1,0 +1,21 @@
+services:
+  myhome:
+    build: .
+    image: myhome:latest
+    container_name: myhome
+    restart: unless-stopped
+    # 호스트 nginx(https://localhost:8443)가 127.0.0.1:5100으로 프록시하므로
+    # 기존 TLS 구성을 그대로 재사용한다
+    ports:
+      - "5100:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=/data/myhome.db
+      # TodoReminderService가 "서버 로컬 시간 오전 10시"에 동작하므로 TZ 필수
+      - TZ=America/New_York
+      - Jwt__Key=${JWT_KEY}
+      - Telegram__BotToken=${TELEGRAM_BOT_TOKEN}
+      - Telegram__ChatId=${TELEGRAM_CHAT_ID}
+    volumes:
+      - ./docker-data:/data
+      - ./docker-data/wwwroot/uploads:/app/wwwroot/uploads
+      - ./docker-data/wwwroot/photos:/app/wwwroot/photos

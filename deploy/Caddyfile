@@ -1,0 +1,25 @@
+# Let's Encrypt 인증서를 자동 발급/갱신한다 (무료).
+# DOMAIN, ACME_EMAIL은 docker-compose가 환경변수로 주입한다.
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	# 업로드 파일 크기 제한 (원하는 값으로 조정)
+	request_body {
+		max_size 25MB
+	}
+
+	reverse_proxy myhome:8080 {
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	log {
+		output file /data/access.log {
+			roll_size 10MB
+			roll_keep 3
+		}
+	}
+}

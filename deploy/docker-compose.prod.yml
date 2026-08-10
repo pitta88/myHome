@@ -1,0 +1,40 @@
+services:
+  myhome:
+    image: myhome:latest
+    container_name: myhome
+    restart: unless-stopped
+    # 외부 노출 금지 — caddy만 접근한다
+    expose:
+      - "8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=/data/myhome.db
+      - TZ=America/New_York
+      - ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
+      - Jwt__Key=${JWT_KEY}
+      - Telegram__BotToken=${TELEGRAM_BOT_TOKEN}
+      - Telegram__ChatId=${TELEGRAM_CHAT_ID}
+    volumes:
+      - /srv/myhome/data:/data
+      - /srv/myhome/data/wwwroot/uploads:/app/wwwroot/uploads
+      - /srv/myhome/data/wwwroot/photos:/app/wwwroot/photos
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /srv/myhome/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - DOMAIN=${DOMAIN}
+      - ACME_EMAIL=${ACME_EMAIL}
+    depends_on:
+      - myhome
+
+volumes:
+  caddy_data:
+  caddy_config:
