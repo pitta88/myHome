@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { LayoutDashboard, Wrench, ClipboardList, CheckSquare, LogOut, ChevronDown, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Wrench, ClipboardList, CheckSquare, LogOut, ChevronDown, ChevronRight, KeyRound } from 'lucide-react';
 import { getCategories } from '../api/categories';
+import ChangePasswordModal from './ChangePasswordModal';
 
 interface SidebarProps {
   username: string;
@@ -15,6 +16,7 @@ export default function Sidebar({ username, onLogout }: SidebarProps) {
   const isTodosActive = location.pathname === '/todos';
   const [logsOpen, setLogsOpen] = useState(isLogsActive);
   const [todosOpen, setTodosOpen] = useState(isTodosActive);
+  const [passwordOpen, setPasswordOpen] = useState(false);
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
@@ -166,15 +168,26 @@ export default function Sidebar({ username, onLogout }: SidebarProps) {
             </div>
             <span className="text-slate-300 text-sm">{username}</span>
           </div>
-          <button
-            onClick={onLogout}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
-            title="로그아웃"
-          >
-            <LogOut size={16} />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setPasswordOpen(true)}
+              className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              title="비밀번호 변경"
+            >
+              <KeyRound size={16} />
+            </button>
+            <button
+              onClick={onLogout}
+              className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              title="로그아웃"
+            >
+              <LogOut size={16} />
+            </button>
+          </div>
         </div>
       </div>
+
+      {passwordOpen && <ChangePasswordModal onClose={() => setPasswordOpen(false)} />}
     </aside>
   );
 }

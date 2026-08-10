@@ -75,10 +75,6 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
             </button>
           </form>
         </div>
-
-        <p className="text-center text-slate-500 text-xs mt-4">
-          기본 계정: admin / admin1234
-        </p>
       </div>
     </div>
   );

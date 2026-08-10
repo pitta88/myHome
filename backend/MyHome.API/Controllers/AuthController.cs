@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -52,6 +53,35 @@ public class AuthController : ControllerBase
 
         var token = GenerateToken(user);
         return Ok(new AuthResponse(token, user.Username));
+    }
+
+    /// <summary>최소 길이. 시드 계정의 기본 비밀번호(admin1234)보다 길게 잡는다.</summary>
+    private const int MinPasswordLength = 10;
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest req)
+    {
+        if (string.IsNullOrWhiteSpace(req.NewPassword) || req.NewPassword.Length < MinPasswordLength)
+            return BadRequest(new { message = $"새 비밀번호는 {MinPasswordLength}자 이상이어야 합니다." });
+
+        if (req.NewPassword == req.CurrentPassword)
+            return BadRequest(new { message = "새 비밀번호가 기존 비밀번호와 같습니다." });
+
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var user = await _db.Users.FindAsync(userId);
+        if (user == null) return Unauthorized();
+
+        if (!BCrypt.Net.BCrypt.Verify(req.CurrentPassword, user.PasswordHash))
+            return BadRequest(new { message = "현재 비밀번호가 올바르지 않습니다." });
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
+        await _db.SaveChangesAsync();
+
+        // 새 토큰을 내려 클라이언트가 교체하도록 한다.
+        // 주의: 이미 발급된 옛 토큰은 만료(30일)까지 유효하다. JWT는 상태를 갖지 않아
+        // 즉시 무효화하려면 토큰 저장소나 토큰 버전 클레임이 필요하다.
+        return Ok(new AuthResponse(GenerateToken(user), user.Username));
     }
 
     private string GenerateToken(User user)

@@ -10,6 +10,10 @@ rm -rf dist
 npm run build
 
 echo "=== 2/3 프론트엔드 결과물을 백엔드 wwwroot로 복사 ==="
+# 파일명에 해시가 붙으므로 그냥 복사하면 옛 번들이 계속 쌓인다.
+# (index.html이 가리키지 않는 죽은 파일이 남아 저장소가 커지고, 지운 내용이
+#  옛 번들 안에 그대로 남는다) 먼저 비우고 복사한다.
+rm -rf "$BACKEND_DIR/wwwroot/assets"
 cp -a dist/index.html dist/assets "$BACKEND_DIR/wwwroot/"
 [ -f dist/favicon.svg ] && cp -a dist/favicon.svg "$BACKEND_DIR/wwwroot/"
 [ -f dist/icons.svg ] && cp -a dist/icons.svg "$BACKEND_DIR/wwwroot/"
