@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+# PR에 새 커밋을 밀면 진행 중이던 이전 실행을 취소한다 (러너 시간 절약)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: .NET SDK 설치
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: NuGet 캐시
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('backend/**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: 복원
+        run: dotnet restore backend/MyHome.slnx
+
+      - name: 빌드
+        run: dotnet build backend/MyHome.slnx -c Release --no-restore
+
+      - name: 테스트 (xUnit)
+        run: >
+          dotnet test backend/MyHome.slnx -c Release --no-build
+          --logger "trx;LogFileName=test-results.trx"
+
+      # 실패했을 때 어떤 테스트가 깨졌는지 PR에서 바로 받아볼 수 있게 한다
+      - name: 테스트 결과 업로드
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'
+          if-no-files-found: ignore
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # build 스크립트가 `tsc -b && vite build` 라서 타입 검사도 함께 이뤄진다
+      - name: 타입체크 + 빌드
+        run: npm run build
