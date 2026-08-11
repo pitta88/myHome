@@ -9,6 +9,8 @@ TestResults/
 coverage.*.xml
 
 # --- IDE / editor ---
+# .vscode에는 개인 디버그 구성(launch.json, tasks.json)이 들어간다.
+.vscode/
 .vs/
 .idea/
 *.user
