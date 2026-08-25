@@ -1,5 +1,10 @@
 # MyHome — AWS 최저비용 배포 가이드
 
+> **비용만 보면 이 문서(Lightsail)가 맞다.** AWS의 구성요소를 직접 조립해보는 게
+> 목적이라면 [`SETUP-EC2.md`](./SETUP-EC2.md)를 보라 — EC2 + ECR + GitHub Actions
+> OIDC + SSM 배포 파이프라인이고, 월 $4 정도 더 든다.
+> **실제로 운영 중인 경로는 EC2 쪽이다.** 이 문서는 비교용으로 남겨둔다.
+
 ## 결론: Lightsail 인스턴스 1대
 
 이 앱에는 서버리스(Lambda 등)를 쓸 수 없는 세 가지 제약이 있다:

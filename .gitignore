@@ -17,6 +17,11 @@ coverage.*.xml
 *.suo
 *.swp
 
+# --- Claude Code ---
+# settings.local.json 은 이 머신 전용 허용 목록이고, 과거 명령이 그대로 남아
+# 있어 토큰 같은 값이 섞일 수 있다. public 리포에 올리지 않는다.
+.claude/settings.local.json
+
 # --- macOS ---
 .DS_Store
 

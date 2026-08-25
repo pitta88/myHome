@@ -1,7 +1,15 @@
 # Let's Encrypt 인증서를 자동 발급/갱신한다 (무료).
-# DOMAIN, ACME_EMAIL은 docker-compose가 환경변수로 주입한다.
+# DOMAIN, ACME_EMAIL, ACME_CA는 docker-compose가 환경변수로 주입한다.
 {
 	email {$ACME_EMAIL}
+
+	# Let's Encrypt 프로덕션은 도메인당 주간 발급 한도와 시간당 실패 한도가 있다.
+	# 설정을 고치며 재시도할 때 한도에 걸리지 않도록, 처음에는 .env에
+	#   ACME_CA=https://acme-staging-v02.api.letsencrypt.org/directory
+	# 를 넣어 스테이징으로 검증한 뒤 (브라우저는 신뢰 안 함 — 경고가 정상),
+	# 성공하면 그 줄을 지우고 재배포해 프로덕션 인증서를 받는다.
+	# 비어 있으면 Caddy 기본값(프로덕션)이 쓰인다.
+	acme_ca {$ACME_CA}
 }
 
 {$DOMAIN} {

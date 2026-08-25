@@ -1,6 +1,8 @@
 services:
   myhome:
-    image: myhome:latest
+    # 이미지는 ECR에서 받는다. ECR_REGISTRY는 /srv/myhome/.env에 있고,
+    # IMAGE_TAG는 myhome-deploy가 셸 환경변수로 덮어쓴다 (기본 latest).
+    image: ${ECR_REGISTRY}/myhome:${IMAGE_TAG:-latest}
     container_name: myhome
     restart: unless-stopped
     # 외부 노출 금지 — caddy만 접근한다
@@ -32,6 +34,9 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
       - ACME_EMAIL=${ACME_EMAIL}
+      # 인증서 발급을 반복 실험할 때만 스테이징을 켠다 (.env에서 지정).
+      # 비워두면 Caddy 기본값(Let's Encrypt 프로덕션)을 쓴다.
+      - ACME_CA=${ACME_CA:-}
     depends_on:
       - myhome
 
