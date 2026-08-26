@@ -8,8 +8,10 @@
 	#   ACME_CA=https://acme-staging-v02.api.letsencrypt.org/directory
 	# 를 넣어 스테이징으로 검증한 뒤 (브라우저는 신뢰 안 함 — 경고가 정상),
 	# 성공하면 그 줄을 지우고 재배포해 프로덕션 인증서를 받는다.
-	# 비어 있으면 Caddy 기본값(프로덕션)이 쓰인다.
-	acme_ca {$ACME_CA}
+	# {$VAR:기본값} 문법 — ACME_CA가 없으면 프로덕션 주소가 쓰인다.
+	# (그냥 {$ACME_CA}로 두면 값이 없을 때 인자가 사라져 Caddy가 문법
+	#  오류로 기동에 실패하고 재시작 루프에 빠진다.)
+	acme_ca {$ACME_CA:https://acme-v02.api.letsencrypt.org/directory}
 }
 
 {$DOMAIN} {

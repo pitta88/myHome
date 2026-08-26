@@ -34,9 +34,11 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
       - ACME_EMAIL=${ACME_EMAIL}
-      # 인증서 발급을 반복 실험할 때만 스테이징을 켠다 (.env에서 지정).
-      # 비워두면 Caddy 기본값(Let's Encrypt 프로덕션)을 쓴다.
-      - ACME_CA=${ACME_CA:-}
+      # 인증서 발급을 반복 실험할 때만 .env에 ACME_CA=<스테이징 주소>를 넣는다.
+      # 기본값을 여기서 프로덕션 주소로 채워야 한다 — ${ACME_CA:-} 처럼 비워두면
+      # 컨테이너에 "정의됐지만 빈 값"으로 전달되고, Caddyfile의 {$ACME_CA:기본값}
+      # 은 미정의일 때만 기본값을 쓰므로 acme_ca 가 인자 없이 남아 기동에 실패한다.
+      - ACME_CA=${ACME_CA:-https://acme-v02.api.letsencrypt.org/directory}
     depends_on:
       - myhome
 
