@@ -108,10 +108,20 @@ jobs:
 
       # 액세스 키 대신 OIDC로 IAM 역할을 잠시 빌린다.
       # GitHub Secrets에 저장되는 건 역할 ARN뿐이라 유출돼도 그 자체로는 무용지물.
+      # ── 임시 디버그: 확인 후 이 스텝 삭제 ─────────────────────────
+      - name: Debug OIDC claims
+        run: |
+          TOKEN=$(curl -sH "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq '{sub, aud, repository, ref, workflow_ref}'
+      # ─────────────────────────────────────────────────────────────
+
       - name: AWS 인증 (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          # 임시: Secret을 변수에서 제거하기 위해 ARN을 직접 박음.
+          # 성공하면 Secret 값이 문제였던 것 → 원래대로 되돌린다.
+          role-to-assume: arn:aws:iam::281136220094:role/myhome-github-deploy
           aws-region: ${{ env.AWS_REGION }}
 
       - name: ECR 로그인
