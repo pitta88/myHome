@@ -22,7 +22,7 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 p-8 flex items-center justify-center">
+      <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex items-center justify-center">
         <div className="text-slate-400">로딩 중...</div>
       </div>
     );
@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
   if (error || !data) {
     return (
-      <div className="flex-1 p-8 flex items-center justify-center">
+      <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex items-center justify-center">
         <div className="text-red-400">데이터를 불러올 수 없습니다.</div>
       </div>
     );
@@ -44,8 +44,8 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="flex-1 p-8 overflow-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="flex-1 min-w-0 w-full overflow-x-hidden p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
         <div>
           <h2 className="text-white text-2xl font-bold">대시보드</h2>
           <p className="text-slate-400 text-sm mt-1">홈 관리 현황 개요</p>
@@ -60,7 +60,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         {summaryCards.map(({ label, value, icon: Icon, color, bg }) => (
           <div key={label} className="bg-slate-800 border border-slate-700 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">

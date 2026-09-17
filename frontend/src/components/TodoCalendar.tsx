@@ -63,7 +63,7 @@ export default function TodoCalendar({ todos, onEdit }: TodoCalendarProps) {
 
       <div className="overflow-x-auto">
       {/* Day headers */}
-      <div className="grid grid-cols-7 border-b border-slate-700 pb-2 min-w-[900px]">
+      <div className="grid grid-cols-7 border-b border-slate-700 pb-2 min-w-[640px]">
         {['일', '월', '화', '수', '목', '금', '토'].map((d, i) => (
           <div key={d} className={`text-center text-xs font-medium ${i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-slate-500'}`}>
             {d}
@@ -72,7 +72,7 @@ export default function TodoCalendar({ todos, onEdit }: TodoCalendarProps) {
       </div>
 
       {/* Calendar grid */}
-      <div className="grid grid-cols-7 auto-rows-[130px] gap-px bg-slate-700 border border-slate-700 rounded-lg overflow-hidden min-w-[900px] mt-2">
+      <div className="grid grid-cols-7 auto-rows-[110px] sm:auto-rows-[130px] gap-px bg-slate-700 border border-slate-700 rounded-lg overflow-hidden min-w-[640px] mt-2">
         {cells.map((day, idx) => {
           if (!day) return <div key={idx} className="bg-slate-900/50" />;
 
