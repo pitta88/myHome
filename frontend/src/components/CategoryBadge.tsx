@@ -14,7 +14,7 @@ const colorMap: Record<string, string> = {
 export default function CategoryBadge({ icon, name, color }: CategoryBadgeProps) {
   const colorClass = colorMap[color] || colorMap.gray;
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border ${colorClass}`}>
+    <span className={`inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap px-2 py-0.5 rounded-full text-xs font-medium border ${colorClass}`}>
       {icon} {name}
     </span>
   );

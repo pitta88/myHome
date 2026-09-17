@@ -56,12 +56,12 @@ export default function ItemsPage() {
   };
 
   if (isLoading) {
-    return <div className="flex-1 p-8 flex items-center justify-center"><div className="text-slate-400">로딩 중...</div></div>;
+    return <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex items-center justify-center"><div className="text-slate-400">로딩 중...</div></div>;
   }
 
   return (
-    <div className="flex-1 p-8 overflow-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="flex-1 min-w-0 w-full overflow-x-hidden p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
         <div>
           <h2 className="text-white text-2xl font-bold">관리 항목</h2>
           <p className="text-slate-400 text-sm mt-1">유지보수 항목 관리</p>
@@ -114,7 +114,7 @@ export default function ItemsPage() {
                   <div className="border-t border-slate-700 divide-y divide-slate-700/50">
                     {catItems.map((item) => (
                       <div key={item.id} className={`px-4 py-2.5 flex items-center justify-between ${item.dueStatus === 'overdue' ? 'bg-red-900/10' : ''}`}>
-                        <div className="flex items-center gap-2 flex-1 min-w-0 text-sm">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 min-w-0 text-sm">
                           <span className="text-white font-medium truncate">{item.name}</span>
                           {!item.isActive && (
                             <span className="px-1.5 py-0.5 bg-slate-700 text-slate-500 rounded-full text-xs flex-shrink-0">비활성</span>
@@ -124,7 +124,7 @@ export default function ItemsPage() {
                           <span className="text-slate-500 text-xs flex-shrink-0">최근 {formatDate(item.lastLogDate)}</span>
                           {item.nextDueDate && <span className="text-slate-500 text-xs flex-shrink-0">기한 {formatDate(item.nextDueDate)}</span>}
                         </div>
-                        <div className="flex items-center gap-2 ml-4">
+                        <div className="flex flex-shrink-0 items-center gap-2 ml-4">
                           <button
                             onClick={() => setLogForItem(item.id)}
                             className="px-3 py-1.5 bg-emerald-600/20 text-emerald-400 border border-emerald-800 rounded-lg text-xs hover:bg-emerald-600/30 transition-colors"

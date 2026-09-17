@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { LayoutDashboard, Wrench, ClipboardList, CheckSquare, LogOut, ChevronDown, ChevronRight, KeyRound } from 'lucide-react';
@@ -8,9 +8,12 @@ import ChangePasswordModal from './ChangePasswordModal';
 interface SidebarProps {
   username: string;
   onLogout: () => void;
+  /** Drawer state — only affects screens below lg, where the sidebar is off-canvas. */
+  open?: boolean;
+  onClose?: () => void;
 }
 
-export default function Sidebar({ username, onLogout }: SidebarProps) {
+export default function Sidebar({ username, onLogout, open = false, onClose }: SidebarProps) {
   const location = useLocation();
   const isLogsActive = location.pathname === '/logs';
   const isTodosActive = location.pathname === '/todos';
@@ -25,8 +28,26 @@ export default function Sidebar({ username, onLogout }: SidebarProps) {
 
   const currentCategory = new URLSearchParams(location.search).get('category');
 
+  // Close the mobile drawer whenever navigation happens.
+  useEffect(() => {
+    onClose?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, location.search]);
+
   return (
-    <aside className="w-64 bg-slate-800 border-r border-slate-700 flex flex-col min-h-screen">
+    <>
+      {open && (
+        <div
+          className="fixed inset-0 z-30 bg-black/60 lg:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 max-w-[85vw] flex-shrink-0 flex-col overflow-y-auto border-r border-slate-700 bg-slate-800 transition-transform duration-200 lg:static lg:min-h-screen lg:max-w-none lg:translate-x-0 ${
+          open ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
       <div className="p-6 border-b border-slate-700">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-xl">
@@ -188,6 +209,7 @@ export default function Sidebar({ username, onLogout }: SidebarProps) {
       </div>
 
       {passwordOpen && <ChangePasswordModal onClose={() => setPasswordOpen(false)} />}
-    </aside>
+      </aside>
+    </>
   );
 }

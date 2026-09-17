@@ -46,12 +46,12 @@ export default function LogsPage() {
     : logs;
 
   if (isLoading) {
-    return <div className="flex-1 p-8 flex items-center justify-center"><div className="text-slate-400">로딩 중...</div></div>;
+    return <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex items-center justify-center"><div className="text-slate-400">로딩 중...</div></div>;
   }
 
   return (
-    <div className="flex-1 p-8 overflow-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="flex-1 min-w-0 w-full overflow-x-hidden p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
         <div>
           <h2 className="text-white text-2xl font-bold">작업 기록</h2>
           <p className="text-slate-400 text-sm mt-1">
@@ -97,9 +97,9 @@ export default function LogsPage() {
                   </div>
                 )}
                 <div className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 flex items-center justify-between">
-                  <div className="flex items-center gap-2 flex-1 min-w-0 text-sm">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 min-w-0 text-sm">
                     <CategoryBadge icon={log.categoryIcon} name={log.categoryName} color={log.categoryColor} />
-                    <span className="text-white font-medium w-36 flex-shrink-0 truncate">{log.itemName}</span>
+                    <span className="text-white font-medium truncate min-w-0 lg:w-36 lg:flex-shrink-0">{log.itemName}</span>
                     {log.notes && <span className="text-slate-400 truncate hidden sm:inline">{log.notes}</span>}
                     {log.productUsed && <span className="text-slate-500 text-xs flex-shrink-0">🏷 {log.productUsed}</span>}
                     {log.cost != null && <span className="text-emerald-400 text-xs font-medium flex-shrink-0">💰 ${log.cost.toFixed(2)}</span>}

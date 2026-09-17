@@ -56,7 +56,7 @@ export default function TodosPage() {
   const completed = filteredTodos.filter(t => t.isCompleted);
 
   if (isLoading) {
-    return <div className="flex-1 p-8 flex items-center justify-center"><div className="text-slate-400">로딩 중...</div></div>;
+    return <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 flex items-center justify-center"><div className="text-slate-400">로딩 중...</div></div>;
   }
 
   const renderTodo = (todo: Todo) => (
@@ -77,9 +77,9 @@ export default function TodosPage() {
         {todo.isCompleted && <Check size={11} />}
       </button>
 
-      <div className="flex items-center gap-2 flex-1 min-w-0 text-sm">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 min-w-0 text-sm">
         <CategoryBadge icon={todo.categoryIcon} name={todo.categoryName} color={todo.categoryColor} />
-        <span className={`font-medium w-48 flex-shrink-0 truncate ${todo.isCompleted ? 'line-through text-slate-500' : 'text-white'}`}>
+        <span className={`font-medium truncate min-w-0 lg:w-48 lg:flex-shrink-0 ${todo.isCompleted ? 'line-through text-slate-500' : 'text-white'}`}>
           {todo.title}
         </span>
         {todo.description && (
@@ -110,8 +110,8 @@ export default function TodosPage() {
   );
 
   return (
-    <div className="flex-1 p-8 overflow-auto">
-      <div className="flex items-center justify-between mb-8">
+    <div className="flex-1 min-w-0 w-full overflow-x-hidden p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
         <div>
           <h2 className="text-white text-2xl font-bold">할 일</h2>
           <p className="text-slate-400 text-sm mt-1">
@@ -153,7 +153,7 @@ export default function TodosPage() {
       </div>
 
       {view === 'calendar' ? (
-        <div className="bg-slate-800 border border-slate-700 rounded-xl p-6">
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-3 sm:p-6">
           <TodoCalendar
             todos={filteredTodos}
             onEdit={setEditTodo}
