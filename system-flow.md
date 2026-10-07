@@ -130,9 +130,8 @@ Todos                     (할 일)
 | 2 | 자동차 | 🚗 | blue |
 | 3 | 집 내부 | 🏠 | orange |
 | 4 | 기타 | 🔧 | gray |
+| 5 | 덱스터 | 🐕 | amber |
 | 6 | CPAP | 😴 | purple |
-
-> Id 5(덱스터)는 시드가 아니라 `POST /api/categories`로 런타임에 추가된 항목입니다.
 
 ---
 

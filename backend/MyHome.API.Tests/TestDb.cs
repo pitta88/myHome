@@ -28,7 +28,7 @@ public sealed class TestDb : IDisposable
             .Options;
 
         Db = new AppDbContext(_options);
-        // Applies the model including the four categories seeded via HasData.
+        // Applies the model including the categories seeded via HasData.
         Db.Database.EnsureCreated();
     }
 
