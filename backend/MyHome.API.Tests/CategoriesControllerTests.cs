@@ -20,11 +20,13 @@ public class CategoriesControllerTests : IDisposable
         var result = await _controller.GetAll();
 
         var categories = result.OkValue<List<CategoryDto>>();
-        Assert.Equal(4, categories.Count);
+        Assert.Equal(6, categories.Count);
         Assert.Contains(categories, c => c.Name == "잔디/정원" && c.Icon == "🌿" && c.Color == "green");
         Assert.Contains(categories, c => c.Name == "자동차");
         Assert.Contains(categories, c => c.Name == "집 내부");
         Assert.Contains(categories, c => c.Name == "기타");
+        Assert.Contains(categories, c => c.Name == "덱스터" && c.Icon == "🐕" && c.Color == "amber");
+        Assert.Contains(categories, c => c.Name == "CPAP" && c.Icon == "😴" && c.Color == "purple");
     }
 
     [Fact]

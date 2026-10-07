@@ -22,7 +22,9 @@ public class AppDbContext : DbContext
             new Category { Id = 1, Name = "잔디/정원", Icon = "🌿", Color = "green" },
             new Category { Id = 2, Name = "자동차", Icon = "🚗", Color = "blue" },
             new Category { Id = 3, Name = "집 내부", Icon = "🏠", Color = "orange" },
-            new Category { Id = 4, Name = "기타", Icon = "🔧", Color = "gray" }
+            new Category { Id = 4, Name = "기타", Icon = "🔧", Color = "gray" },
+            new Category { Id = 5, Name = "덱스터", Icon = "🐕", Color = "amber" },
+            new Category { Id = 6, Name = "CPAP", Icon = "😴", Color = "purple" }
         );
     }
 }

@@ -130,6 +130,8 @@ Todos                     (할 일)
 | 2 | 자동차 | 🚗 | blue |
 | 3 | 집 내부 | 🏠 | orange |
 | 4 | 기타 | 🔧 | gray |
+| 5 | 덱스터 | 🐕 | amber |
+| 6 | CPAP | 😴 | purple |
 
 ---
 
